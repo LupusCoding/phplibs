@@ -23,5 +23,7 @@ $class = new \My\Namespace\Classname();
 ```
 
 ## Changelog
+* v0.2.0<br/>
+   Added autoloader with codepool support
 * v0.1.0<br/>
-   Created default Autoloader
+   Created default Autoloader 
