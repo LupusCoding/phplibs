@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LC Recaptcha V3 Example Template</title>
+</head>
+<body>
+    <script src='https://www.google.com/recaptcha/api.js?render=my-shared-key'></script>
+    <script type="text/javascript">
+        grecaptcha.ready(function() {
+            // this function is triggered when the site is loaded
+            grecaptcha.execute('my-shared-key', {action: 'homepage'}).then(validateToken(token, 'homepage'));
+        });
+        // this function is triggered on captcha interaction
+        function validateToken(token, action) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var data = JSON.parse(this.response);
+                    if(data.status === 'success') {
+                        console.log('Captcha succesful validated.');
+                        // did we get a valid score?
+                        if(typeof data.score === 'number') {
+                            if(data.score > 0.4) {
+                                console.log('Congratulation, you seem to be a human!')
+                            } else {
+                                console.log('Hello Mr. Bot.')
+                            }
+                        }
+                    } else {
+                        console.log('Captcha validation failed.');
+                    }
+                }
+            };
+            // www.mysite.com/path/to/verify.php
+            xhr.open("POST", "exampleV3.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(JSON.stringify({'g-recaptcha-token': token, 'action': action}));
+
+        }
+    </script>
+<div>
+    <p>Get more Information about reCaptcha v3 at <a href="https://developers.google.com/recaptcha/docs/display">Google reCaptcha Docs</a></p>
+</div>
+</body>
+</html>

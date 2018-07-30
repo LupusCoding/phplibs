@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LC Recaptcha V2 Example Template</title>
+</head>
+<body>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script type="text/javascript">
+        // this function is triggered if captcha token is expired
+        function captchaExpired() {
+            console.log('The captcha expired. Please click the captcha again.')
+        }
+        // this function is triggered if captcha can not connect to google server
+        function captchaError() {
+            console.log('There was a problem. Please try again later.')
+        }
+        // this function is triggered on captcha interaction
+        function validateToken(token) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var data = JSON.parse(this.response);
+                    if(data.status === 'success') {
+                        console.log('Captcha succesful validated.');
+                    } else {
+                        console.log('Captcha validation failed.');
+                    }
+                }
+            };
+            // www.mysite.com/path/to/verify.php
+            xhr.open("POST", "exampleV2.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(JSON.stringify({'g-recaptcha-token': token}));
+
+        }
+    </script>
+    <div class="g-recaptcha"
+         data-sitekey="my-shared-key"
+         data-callback="validateToken"
+         data-expired-callback="captchaExpired"
+         data-error-callback="captchaError"
+    ></div>
+<div>
+    <p>Get more Information about client-side integration at <a href="https://developers.google.com/recaptcha/docs/display">Google reCaptcha Docs (Display | Invisible | Android)</a></p>
+    <p>Get more Information about server-side integration at <a href="https://developers.google.com/recaptcha/docs/verify">Google reCaptcha Docs (Verify)</a></p>
+</div>
+</body>
+</html>
