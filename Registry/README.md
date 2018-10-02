@@ -1,4 +1,4 @@
-# Recaptcha
+# Registry
 
 ## Installation
 1. Get Registry package from github.
